@@ -3,10 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class UC4_DeleteContact {
+public class UC5_MultiplePerson {
 	static Scanner sc=new Scanner(System.in);
 	static List<Contacts> person=new ArrayList<Contacts>();
-
 	public  static void addNewContact() {
 		//variables
 		String firstName,lastName,address,city,state,email;
@@ -36,8 +35,7 @@ public class UC4_DeleteContact {
 	public static void displayContacts() {
 		int n=1;
 		System.out.println("Your contacts are:");
-		for(Contacts contacts :person)
-		{
+		for(Contacts contacts :person){
 			System.out.print(n+")");
 			System.out.println(contacts);
 			n++;
@@ -45,7 +43,7 @@ public class UC4_DeleteContact {
 		System.out.println(" ");
 	}
 
-public static void editContacts() {
+	public static void editContacts() {
 		System.out.println("In the edit");
 		System.out.println("Enter your first name:");
 		String s=sc.next();
@@ -78,19 +76,25 @@ public static void editContacts() {
 				break;
 				default:
 					break;
-				}
+					}
 				}
 			else {
 				System.out.println("Invalid option");
 			}
 		}
 	}
+
 	public static void deleteContact(){
 			System.out.println("Enter your First Name");
+			// stores user input's first name
 			String s=sc.next();
 			for(Contacts contacts:person){
 				if(contacts.getFirstName().equals(s)) {
 					person.remove(contacts);
+					System.out.println("Deleted sucessfully.");
+				}
+				else {
+					System.out.println("Invalid first name");
 				}
 			}
 	}
@@ -124,5 +128,6 @@ public static void editContacts() {
 				break;
 			}
 		}
+		sc.close();
 	}
 }

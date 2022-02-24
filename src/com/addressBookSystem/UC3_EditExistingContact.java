@@ -1,169 +1,116 @@
 package com.addressBookSystem;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
-class AddressBook3 {
-    // class variable
-    static final Scanner scanner = new Scanner(System.in);
-    static Set<String> emptyContacts = new HashSet<>();
-    static Set<String> nonEmptyContacts = new HashSet<>();
-
-    // instance method
-   public void createNewContact() throws Exception 
-    {
-        System.out.print("Enter name of the contact:");
-        String contactName = scanner.nextLine();
-        File file = new File(contactName);
-        if (file.exists()) 
-        {
-            System.out.println("contact " + file.getName() + " already exists!");
-        } 
-        else 
-        {
-            if (file.createNewFile()) 
-            {
-                System.out.println("new contact " + file.getName() + " is created successfully");
-                emptyContacts.add(file.getName());
-            } 
-            else 
-            {
-                System.out.println("file creation failed!");
-            }
-        }
-
-    }
-   public void writeFile(String fileName,String content)throws Exception
-    {
-        FileWriter fw = new FileWriter(fileName);
-        fw.write(content);
-        fw.close();
-    }
-   public void fillContactDetails()throws Exception
-    {
-        System.out.print("enter empty contact name which is going to be filed:");
-        String contactName = scanner.nextLine();
-        if (emptyContacts.contains(contactName)) 
-        {
-            String details = "";
-            System.out.print("enter first name:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter last name:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter address:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter city:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter state:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter zip:");
-            details += scanner.nextLine() + "\n";
-            System.out.print("enter phone number:");
-            details += scanner.nextLine() + "\n";
-            writeFile(contactName, details);
-            emptyContacts.remove(contactName);
-            nonEmptyContacts.add(contactName);
-        }
-        else 
-        {
-            System.out.println(contactName + " is not empty contact or it is not created");
-            System.out.println("use other option 1 to create new contact or option 5 to edit already created one");
-        }
-
-    }
-    public void readFile(String fileName)throws Exception
-    {
-        FileReader fileReader = new FileReader(fileName);
-        int character;
-        while ((character = fileReader.read()) != -1) 
-        {
-            System.out.print((char) character);
-        }
-        fileReader.close();
-    }
-    public void editContactInfo()throws Exception
-    {
-        System.out.print("enter name of the contact to edit:");
-        String contactName = scanner.nextLine();
-        if(emptyContacts.contains(contactName))
-        {
-            System.out.println("pleast fill the contact "+ contactName + " before editing it");
-            return;
-        }
-        else if(!nonEmptyContacts.contains(contactName))
-        {
-            System.out.println("please create the contact "+ contactName +" before editing it");
-            return;
-        }
-        System.out.println("The content of " + contactName + " at present is:");
-        readFile(contactName);
-        System.out.println("Enter the 7 lines of  new content to write:");
-        String newContent="";
-        for (int i = 1; i <= 7; i++) 
-        {
-            newContent += scanner.nextLine() + "\n";
-        }
-        String option;
-        do 
-        {
-            System.out.println("enter... S for SAVE        C for CANCEL");
-            option = scanner.nextLine();
-        } while (!(option.equalsIgnoreCase("s")  || option.equalsIgnoreCase("c")));
-        switch(option)
-        {
-            case "s":
-            case "S":
-                writeFile(contactName, newContent);
-                System.out.println(contactName + " is saved with new content");
-                break;
-            case "c":
-            case "C":
-                System.out.println("changes are not saved");
-                return;
-            default:
-                System.out.println("please select either S or C");
-        }
-        
-    }
-}
 public class UC3_EditExistingContact {
+	static Scanner sc=new Scanner(System.in);
+	static List<Contacts> person=new ArrayList<Contacts>();
 
-	// class variable
-    static final Scanner scanner = new Scanner(System.in);
+	public  static void addNewContact() {
+		//variables
+		String firstName,lastName,address,city,state,email;
+		long phonenumber;
+		int zip;
+		
+		System.out.println("Enter your First name:");
+		firstName=sc.next();
+		System.out.println("Enter your Last name:");
+		lastName=sc.next();
+		System.out.println("Enter your Address:");
+		address=sc.next();
+		System.out.println("Enter your City:");
+		city=sc.next();
+		System.out.println("Enter your State:");
+		state=sc.next();
+		System.out.println("Enter your email-id:");
+		email=sc.next();
+		System.out.println("Enter your Phone Number:");
+	    phonenumber=sc.nextLong();
+	    System.out.println("Enter your ZIP code:");
+		zip=sc.nextInt();
+		Contacts contacts=new Contacts(firstName,lastName,address,city,state,phonenumber,zip);
+		person.add(contacts);
+		}
 
-    public static void main(String[] args) throws Exception 
-    {
-        AddressBook3 addressBook = new AddressBook3();
-        while (true) 
-        {
-            System.out.println("-----------------------------");
-            System.out.println("1.create a new contact");
-            System.out.println("2.fill contact details");	          
-            System.out.println("3.edit contact information");
-            System.out.println("4.exit");
-            System.out.print("enter option:");
-            String option = scanner.nextLine().trim();
-            switch (option) 
-            {
-                case "1":
-                    addressBook.createNewContact();
-                    break;
-                case "2":
-                    addressBook.fillContactDetails();
-                    break;	                
-                case "3":
-                    addressBook.editContactInfo();
-                    break;
-                case "4":
-                    System.out.println("exiting....");
-                    System.exit(0);
-                default:
-                    System.out.println("please enter the correct choice");
-                    break;
-            }
-        }
-    }
+	public static void displayContacts() {
+		int n=1;
+		System.out.println("Your contacts are:");
+		for(Contacts contacts :person)
+		{
+			System.out.print(n+")");
+			System.out.println(contacts);
+			n++;
+		}
+		System.out.println(" ");
+	}
+
+public static void editContacts() {
+		System.out.println("In the edit");
+		System.out.println("Enter your first name:");
+		String s=sc.next();
+		for(Contacts contacts:person) {
+			if(contacts.getFirstName().equals(s)) {
+				System.out.println("Enter what you want to edit");
+				System.out.println("1)First Name 2)Last Name 3)Address 4)City 5)State 6)Phone Number 7)ZIP code");
+				int i=sc.nextInt();
+				switch(i) {
+				case 1:System.out.println("Enter your new First name:");
+				contacts.setFirstName(sc.next());
+				break;
+				case 2:System.out.println("Enter your new Lirst name:");
+				contacts.setLastName(sc.next());
+				break;
+				case 3:System.out.println("Enter your new Address:");
+				contacts.setAddress(sc.next());
+				break;
+				case 4:System.out.println("Enter your new City:");
+				contacts.setCity(sc.next());
+				break;
+				case 5:System.out.println("Enter your new State:");
+				contacts.setState(sc.next());
+				break;
+				case 6:System.out.println("Enter your new Phone Number:");
+				contacts.setPhoneNumber(sc.nextLong());
+				break;
+				case 7:System.out.println("Enter your new ZIP code:");
+				contacts.setZip(sc.nextInt());
+				break;
+				default:
+					break;
+				}
+				}
+			else {
+				System.out.println("Invalid option");
+			}
+		}
+	}
+	public static void main(String[] args) {
+		System.out.println("Welcome to Address Book Program");
+		boolean b=true;
+		while(b){
+			System.out.println("Press 1 to Add a contact. ");
+			System.out.println("Press 2 to Edit Contact");
+			System.out.println("Press 3 to Display contacts. ");
+			
+			System.out.println("Press 0 to exit");
+			int option=sc.nextInt();
+			switch(option) {
+			case 1:
+				addNewContact();
+				break;
+			case 2:
+				editContacts();
+				break;
+			case 3:
+				displayContacts();
+				break;
+			case 0:
+				b=false;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
